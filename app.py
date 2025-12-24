@@ -7,7 +7,6 @@ from prophet import Prophet
 import matplotlib.pyplot as plt
 import datetime
 import warnings
-from IPython.display import Markdown as IPythonMarkdown
 
 # 설정 및 경고 무시
 warnings.filterwarnings('ignore')
@@ -124,9 +123,10 @@ elif mode == "주요 종목 일괄 분석":
         
         st.subheader("📊 종합 분석 요약 리스트")
         st.dataframe(summary_df, use_container_width=True)
-        
+
+        markdown_output = generate_report(summary_df)
         report_md = generate_report(summary_df)
         st.subheader("📝 자동 생성된 투자 전략 보고서")
-        st.markdown(report_md)
+        st.markdown(markdown_output)
         
-        st.download_button("보고서 다운로드 (.md)", report_md, "investment_report.md")
+        st.download_button("보고서 다운로드 (.md)", markdown_output, "investment_report.md")
