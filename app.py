@@ -84,12 +84,12 @@ def generate_report(summary_df):
     return md
 
 # --- UI 레이아웃 ---
-st.title("🚀 나만의 AI 주식 예측 대시보드")
+st.title("🚀 AI Stock Prediction Dashboard")
 st.sidebar.header("🛠️ 설정")
 
-mode = st.sidebar.radio("분석 모드 선택", ["단일 종목 상세 분석", "주요 종목 일괄 분석"])
+mode = st.sidebar.radio("분석 모드 선택", ["단일 종목 상세 분석(직접 입력)", "주요 종목(시총 상위 20) 일괄 분석"])
 
-if mode == "단일 종목 상세 분석":
+if mode == "단일 종목 상세 분석(직접 입력)":
     ticker = st.sidebar.text_input("티커 입력 (예: AAPL, 005930.KS)", "AAPL")
     if st.sidebar.button("분석 시작"):
         with st.spinner(f'{ticker} 분석 중...'):
@@ -106,7 +106,7 @@ if mode == "단일 종목 상세 분석":
             plt.axvline(x=df.index[-1], color='red', linestyle='--')
             st.pyplot(fig)
 
-elif mode == "주요 종목 일괄 분석":
+elif mode == "주요 종목(시총 상위 20) 일괄 분석":
     kr_tickers = ['005930.KS', '000660.KS', '005490.KS', '035420.KS', '035720.KS', '005380.KS', '051910.KS', '207940.KS', '006400.KS', '068270.KS']
     us_tickers = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'NFLX', 'AMD', 'AVGO']
     
