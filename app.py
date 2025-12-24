@@ -20,11 +20,20 @@ def get_stock_data(ticker):
     return df
 
 def run_analysis(df, ticker):
-    # 1차원 데이터 추출
+    # 데이터가 비어있거나 너무 적은지 확인 (최소 20일치 권장)
+    if df is None or len(df) < 20:
+        raise ValueError(f"{ticker}: 분석을 위한 충분한 데이터가 없습니다. (현재 {len(df) if df is not None else 0}개)")
+
     close_series = df['Close'].squeeze()
     
-    # 지표 계산
-    rsi = ta.momentum.rsi(close_series, window=14).iloc[-1]
+    # RSI 계산
+    rsi_series = ta.momentum.rsi(close_series, window=14)
+    
+    # 계산 결과가 유효한지 다시 확인
+    if rsi_series.dropna().empty:
+        rsi = 50.0 # 데이터 부족 시 중립 값 부여 혹은 에러 발생
+    else:
+        rsi = rsi_series.iloc[-1]
     vol_focus = df['Volume'].iloc[-1] / df['Volume'].rolling(window=20).mean().iloc[-1]
     
     # Prophet 예측
